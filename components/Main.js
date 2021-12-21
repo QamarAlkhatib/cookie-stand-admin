@@ -1,43 +1,45 @@
+import CreateForm from '../components/CreateForm'
+import ReportTable from '../components/ReportTable'
 import { useState } from "react";
+import Footer from '../components/Footer'
 
-const Main = () => {
-    const [table, setTable] = useState();
-    const [data, Setdata] = useState();
-
-    const formHandler = (e) => {
+export default function Main(props) {
+    const [hours, setHour] = useState(['6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm']);
+    const [report,setReport] =useState([])
+    const [total, setTotals] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+    function formHandler(e){
         e.preventDefault()
-        let result = {
-            location: e.target.loc.value,
-            minCustomers: Number(e.target.min.value),
-            maxCustomers: Number(e.target.max.value),
-            avgCookies: Number(e.target.avg.value),
-        };
-        setTable("Report table comming soon...")
-        Setdata(JSON.stringify(result))
+        
+        let sum_total =0
+        let minCustomers =Number(e.target.min.value)
+        let maxCustomers= Number(e.target.max.value)
+        let avgCookies= Number(e.target.avg.value)
+        
+        const storeData = {
 
+            location: e.target.loc.value,
+            hourly_sales:hours.map(() => Math.ceil(avgCookies * (Math.ceil(Math.random() * (maxCustomers - minCustomers) + minCustomers)))),
+        }
+        for(let i = 0; i < storeData.hourly_sales.length; i++){
+            sum_total += storeData.hourly_sales[i]
+        }
+        storeData.total = sum_total
+        setReport([...report,storeData])
+
+        let total_sum = total.map((val,idx) => {
+            if (idx === total.length - 1) {
+                return val + storeData.total
+            }
+            return val + storeData.hourly_sales[idx]
+        })
+
+        setTotals(total_sum)
     }
     return (
-        <main class="grid justify-items-center py-12 ...">
-            <form onSubmit={formHandler} class="bg-[#3af3b4] w-9/12 rounded-lg py-8 px-8 ...">
-                <h2 class='text-2xl text-center py-3 ...'>Create Cookies Stand</h2>
-
-                <label> Location </label>
-                <input name='loc' type='text' class=" w-10/12 mb-8 ..." placeholder='Add Location' /><br />
-                <label class="pl-11"> Minimum Customers per Hour </label>
-                <label class="pl-10 ml-10 "> Maximum Customers per Hour </label>
-                <label class="pl-8 ml-10"> Average Cookies per Sale </label>
-                <div>
-                    <input type="number" name='min' class="ml-10 top-10" placeholder='Enter number' />
-                    <input type="number" name='max' class="ml-10" placeholder='Enter number' />
-                    <input type="number" name='avg' class="ml-10" placeholder='Enter number' />
-                    <button class="ml-10 bg-[#00c57f] px-12" >Create</button>
-                </div>
-
-            </form>
-            <p>{table}</p>
-            <p>{data}</p>
-        </main>
-
+      <> 
+        <CreateForm formHandler={formHandler} />
+        <ReportTable report={report} total = {total} hours={hours}/>
+        <Footer report={report}/>
+      </>
     )
 }
-export default Main
