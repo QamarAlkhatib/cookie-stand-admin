@@ -6,14 +6,14 @@ const ReportTable = (props) => {
         )
     } else {
         return (
-            <div class="grid justify-items-center py-12 ...">
-                <table class="table-auto">
-                    <thead className='bg-green-500 border border-green-300'>
+            <div className="grid justify-items-center py-12 ...">
+                <table className="table-auto">
+                    <thead className='bg-[#00D29B] border-[#26D6A5] border-2'>
 
-                        <th class='px-3'>Location</th>
+                        <th className='px-3'>Location</th>
                         {props.hours.map((hour) => {
                             return (
-                                <th class='px-2'>{hour}</th>
+                                <th className='px-2 '>{hour}</th>
                             )
                         })}
                         <th>Total</th>
@@ -21,30 +21,33 @@ const ReportTable = (props) => {
                     </thead>
                     <tbody>
                         {
-                            props.report.map((val, idx) => {
+                            props.response.map((val, idx) => {
 
                                 const element =
                                     <>
-                                        <td className='px-2 border border-black' >{val.location}</td>
+                            
+                                        <td className='px-2 border border-[#26D6A5]' >{val.location}
+                                            <button className='ml-12 '>❌</button>
+                                        </td>
                                         {
                                             val.hourly_sales.map(item => {
                                                 return (
-                                                    <td className='border border-black'> {item} </td>
+                                                    <td className='border border-[#26D6A5] text-center text-[#232837] ...'>{item} </td>
                                                 )
                                             })
                                         }
-                                        <td className='border border-black'>{val.total}</td>
+                                        <td className='border border-[#26D6A5] text-center text-[#232837]'>{val.total}</td>
                                     </>
 
                                 if (idx % 2 == 0) {
                                     return (
-                                        <tr className='bg-green-400'>
+                                        <tr className='bg-[#85E5C1]'>
                                             {element}
                                         </tr>
                                     )
                                 } else {
                                     return (
-                                        <tr className='bg-green-300'>
+                                        <tr className='bg-[#4FE0B3]'>
                                             {element}
                                         </tr>
                                     )
@@ -52,6 +55,12 @@ const ReportTable = (props) => {
                             })
                         }
                     </tbody>
+                    <tfoot>
+                        <th className='bg-[#00D29B] border-[#26D6A5] border-2'>Total</th>
+
+                        <td className='border-2 bg-[#00D29B] border-[#26D6A5] text-center text-[#232837] ...'>1s </td>
+
+                    </tfoot>
                 </table>
 
             </div>
