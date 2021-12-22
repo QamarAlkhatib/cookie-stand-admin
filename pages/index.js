@@ -1,9 +1,8 @@
-import CookieStandAdmin from '../components/CookieStandAdmin'
-
-export default function Home() {
+import Home from '../components/Home'
+export default function index() {
   return (
     <div>
-      <CookieStandAdmin />
+      <Home />
     </div>
   )
 }
